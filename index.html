@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tanda Tangan BY. Mr. DONI</title>
+</head>
+<body>
+
+    <canvas id="sign"></canvas>
+    <p>
+        <button id="reset-sign">Ulangi</button>
+        <button id="save-sign">Simpan</button>
+    </p>
+
+
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+  <script src="sign.js"></script>
+  <script>
+  $(document).ready(function(){
+      $('#sign').sign({
+          resetButton:$('#reset-sign'),
+          lineWidth: 1,
+          width: 600,
+          height: 400
+      });
+
+      $('#save-sign').click(function(){
+        // alert('ok');
+        var canvas = document.getElementById('sign');
+        var dataURL = canvas.toDataURL('image/png');
+        var img_data = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        $.ajax({
+						url: 'save_sign.php',
+						data: { img_data:img_data },
+						type: 'post',
+						dataType: 'json',
+						success: function (response) {
+							// window.location.reload();
+                            alert(response.status);
+						}
+					});
+
+      });
+
+  });
+  </script>
+</body>
+</html>
